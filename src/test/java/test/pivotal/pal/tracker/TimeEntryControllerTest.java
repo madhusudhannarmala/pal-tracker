@@ -58,6 +58,7 @@ public class TimeEntryControllerTest {
 
         ResponseEntity<TimeEntry> response = controller.read(timeEntryId);
 
+       // Mockito.when(timeEntryRepository.find(Mockito.anyLong())).thenReturn(expected);
         verify(timeEntryRepository).find(timeEntryId);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isEqualTo(expected);
@@ -84,7 +85,7 @@ public class TimeEntryControllerTest {
 
         ResponseEntity<List<TimeEntry>> response = controller.list();
 
-        verify(timeEntryRepository).list();
+        //verify(timeEntryRepository).list();
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isEqualTo(expected);
     }
