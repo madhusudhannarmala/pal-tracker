@@ -7,7 +7,8 @@ import java.util.List;
 
 import static org.springframework.http.ResponseEntity.*;
 
-
+@RestController
+@RequestMapping("/time-entries")
 public class TimeEntryController {
     private final TimeEntryRepository timeEntriesRepo;
 
@@ -15,14 +16,14 @@ public class TimeEntryController {
         this.timeEntriesRepo = timeEntriesRepo;
     }
 
-
-    public ResponseEntity<TimeEntry> create(TimeEntry timeEntryToCreate) {
+@PostMapping
+    public ResponseEntity<TimeEntry> create(@RequestBody TimeEntry timeEntryToCreate) {
         return created(null)
                 .body(timeEntriesRepo.create(timeEntryToCreate));
     }
 
-
-    public ResponseEntity<TimeEntry> read( long id) {
+    @GetMapping("{id}")
+    public ResponseEntity<TimeEntry> read( @PathVariable long id) {
         var timeEntryFound = timeEntriesRepo.find(id);
 
         return timeEntryFound == null ?
@@ -30,13 +31,13 @@ public class TimeEntryController {
                 ok(timeEntryFound);
     }
 
-
+    @GetMapping
     public ResponseEntity<List<TimeEntry>> list() {
         return ok(timeEntriesRepo.list());
     }
 
-
-    public ResponseEntity<TimeEntry> update(long id, TimeEntry timeEntry) {
+@PutMapping("{id}")
+    public ResponseEntity<TimeEntry> update(@PathVariable long id, @RequestBody TimeEntry timeEntry) {
         var timeEntryUpdated = timeEntriesRepo.update(id, timeEntry);
 
         return timeEntryUpdated == null ?
@@ -44,8 +45,8 @@ public class TimeEntryController {
                 ok(timeEntryUpdated);
     }
 
-
-    public ResponseEntity<Void> delete(long id) {
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> delete(@PathVariable  long id) {
         timeEntriesRepo.delete(id);
 
         return noContent().build();
